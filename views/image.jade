@@ -1,0 +1,25 @@
+div.container
+  div.tweetDiv
+
+  hr
+  p 現在このサイトを見ている人は
+    span#count
+    人います。
+
+  script(type='text/javascript', src='/socket.io/socket.io.js')
+  script(type='text/javascript')
+      var socket = io.connect();
+      socket.on('count change', function(count) {
+        // event
+        $('#count').text(count);
+      });
+
+      var image_count = 0;
+      socket.on('image', function(url) {
+        /*
+        image_count++;
+        if (image_count >= 10) {$('div.tweetDiv img').eq(10).empty();}
+        */
+
+        $('div.tweetDiv').prepend($('<img src="' + url +'"><br>'));
+      });

@@ -1,0 +1,44 @@
+div.container
+  div.tweetDiv
+    table.tweetTable
+
+  hr
+  p 現在このサイトを見ている人は
+    span#count
+    人います。
+
+  script(type='text/javascript', src='/socket.io/socket.io.js')
+  script(type='text/javascript')
+      var socket = io.connect();
+      socket.on('count change', function(count) {
+        // event
+        $('#count').text(count);
+      });
+
+      var tweet_count = 0;
+      socket.on('tweet',function(tweet) {
+        //console.log(tweet['name']);
+
+        /*
+        tweet_count++;
+
+        if (tweet_count >= 100) {
+          $('table.tweetTable tr').eq(tweet_count - 100).empty();
+        }
+        */
+
+        var trDom = $('<tr>');
+        trDom.append($('<td>').addClass('iconTd')
+          .append($('<img src="' + tweet['icon'] + '">'))
+        );
+        trDom.append($('<td>').addClass('nameTd')
+          .append($('<p>').addClass('name').text(tweet['name']))
+        );
+        trDom.append($('<td>').addClass('atTd')
+          .append($('<p>').addClass('at').text(tweet['at']))
+        );
+        trDom.append($('<td>').addClass('chatTd')
+          .append($('<p>').addClass('chat').text(tweet['text']))
+        );
+        $('table.tweetTable').append(trDom);        	
+      });
